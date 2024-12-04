@@ -12,7 +12,7 @@ public class Product {
     private String productName;
     private double productPrice;
     private int productStock;
-    private String productSeller;
+    private int productSellerId;
 
     /**
      * Parametrized constructor constructs a new Product object including the
@@ -22,16 +22,16 @@ public class Product {
      * @param productName
      * @param productPrice
      * @param productStock
-     * @param productSeller
+     * @param productSellerId
      */
 
     public Product(int productId, String productName, double productPrice, int productStock,
-            String productSeller) {
+            int productSellerId) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
-        this.productSeller = productSeller;
+        this.productSellerId = productSellerId;
     }
 
     /**
@@ -115,22 +115,22 @@ public class Product {
     }
 
     /**
-     * returns seller of product
+     * returns identified for seller of product
      * 
-     * @return product seller
+     * @return product seller id
      */
 
-    public String getProductSeller() {
-        return productSeller;
+    public int getProductSellerId() {
+        return productSellerId;
     }
 
     /**
-     * sets seller of product
+     * sets identifier for seller of product
      * 
-     * @param productSeller
+     * @param productSellerId
      */
-    public void setProductSeller(String productSeller) {
-        this.productSeller = productSeller;
+    public void setProductSellerId(int productSellerId) {
+        this.productSellerId = productSellerId;
     }
 
     /**
@@ -146,7 +146,7 @@ public class Product {
                 ", name: " + productName +
                 ", price: " + productPrice +
                 ", stock: " + productStock +
-                ", seller: " + productSeller +
+                ", seller: " + productSellerId +
                 "}";
     }
 }
