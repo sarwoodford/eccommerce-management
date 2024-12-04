@@ -5,7 +5,7 @@ package ecommerce;
  * Main application class serving as the entry point of the program.
  * Initializes and starts the e-commerce platform.
  */
-public class Application {
+public class App {
 
     /**
      * Main method that starts the application.
