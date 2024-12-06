@@ -4,4 +4,11 @@ package ecommerce.model;
 // Inherits from User and contains specific functionalities for buyers.
 public class Buyer extends User {
     // Additional methods specific to buyers, e.g., browsing products.
+
+    // Constructor
+    public Buyer(int id, String username, String password, String email) {
+        super(id, username, password, email, "buyer");
+    }
+
+    // Misc buyer methods to create related to the product service or doa
 }
