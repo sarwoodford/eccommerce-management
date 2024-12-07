@@ -1,5 +1,7 @@
 package ecommerce;
 
+import ecommerce.utils.DatabaseUtils;;
+
 
 /**
  * Main application class serving as the entry point of the program.
@@ -13,8 +15,10 @@ public class App {
      */
     public static void main(String[] args) {
         // Initialize database connection.
-        // Start the main application loop.
+        DatabaseUtils.initializeDatabase();
+       
         // Manage user interactions via controllers and services.
+         // Start the main application loop.
     }
 
     /**
