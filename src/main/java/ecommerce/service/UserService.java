@@ -33,6 +33,11 @@ public class UserService {
         userDAO.addUser(user);
     }
 
+
+    public boolean login(String email, String password) {
+        return userDAO.authenticateUser(email, password);
+    }
+
     /**
      * returns a list of all users in database
      * 
