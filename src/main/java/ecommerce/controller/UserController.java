@@ -7,6 +7,8 @@ import ecommerce.service.UserService;
 import ecommerce.model.Admin;
 import ecommerce.model.Buyer;
 import ecommerce.model.Seller;
+import ecommerce.dao.UserDAO;
+import ecommerce.utils.InputUtils;
 
 /**
  * UserController class acts as an intermediate between User and UserService
@@ -34,23 +36,33 @@ public class UserController {
      * @param email
      * @param role
      */
-    public void addUser(int id, String username, String password, String email, String role) {
-        User user;
+    public void registerUser() {
+        System.out.println("Register a new user:");
+        String username = InputUtils.readString("Enter username: ");
+        String password = InputUtils.readPassword("Enter password: ");
+        String email = InputUtils.readString("Enter email: ");
+        String role = InputUtils.readString("Enter role (Buyer, Seller, Admin): ");
 
+try{
+    User user;
         switch (role.toLowerCase()) {
             case "admin":
-                user = new Admin(id, username, password, email);
+                user = new Admin(0, username, password, email);
                 break;
             case "seller":
-                user = new Seller(id, username, password, email);
+                user = new Seller(0, username, password, email);
                 break;
             case "buyer":
-                user = new Buyer(id, username, password, email);
+                user = new Buyer(0, username, password, email);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid role. Valid user roles include Buyer, Seller and Admin.");
         }
         userService.addUser(user);
+        System.out.println("User registered successfully!");
+    } catch (IllegalArgumentException e) {
+        System.out.println("Error: " + e.getMessage());
+    }
     }
 
     /**
@@ -119,4 +131,28 @@ public class UserController {
     public List<User> getUsersByRole(String role) {
         return userService.getUsersByRole(role);
     }
+
+    /**
+     * returns a boolean based on user login credentials
+     * 
+     * @param username
+     * @param password
+     * @return boolean 
+     */
+
+     public boolean loginUser() {
+        System.out.println("User Login:");
+        String username = InputUtils.readString("Enter username: ");
+        String password = InputUtils.readPassword("Enter password: ");
+
+        boolean isAuthenticated = userService.login(username, password);
+        if (isAuthenticated) {
+            System.out.println("Login successful!");
+            return true;
+        } else {
+            System.out.println("Login failed. Please check your credentials.");
+            return false;
+        }
+    }
+
 }

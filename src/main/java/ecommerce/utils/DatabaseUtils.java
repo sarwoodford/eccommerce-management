@@ -73,4 +73,13 @@ public class DatabaseUtils {
             return null;
         }
     }
+
+    public static void closeDatabase() {
+        try {
+            DriverManager.getConnection(URL + ";shutdown=true", USER, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

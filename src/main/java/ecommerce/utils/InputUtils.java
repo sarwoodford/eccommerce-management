@@ -30,6 +30,18 @@ public class InputUtils {
         }
     }
 
+    // Read and validate username
+    public static String readUsername(String prompt) {
+        while (true) {
+            String username = readString(prompt);
+            if (username.matches("^[a-zA-Z0-9_]+$")) {
+                return username;
+            } else {
+                System.out.println("Invalid username format. Please try again.");
+            }
+        }
+    }
+
     // Read and validate email address
     public static String readEmail(String prompt) {
         while (true) {
