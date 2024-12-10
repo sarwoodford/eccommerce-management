@@ -21,19 +21,19 @@ public class DatabaseUtils {
     public static void initializeDatabase() {
         try (Connection connection = getConnection()) {
             String createUsersTable = "CREATE TABLE IF NOT EXISTS users (" +
-                "id SERIAL PRIMARY KEY," +
-                "username VARCHAR(50) UNIQUE NOT NULL," +
-                "password VARCHAR(255) NOT NULL," +
-                "email VARCHAR(100) NOT NULL," +
-                "role VARCHAR(10) NOT NULL);";
+                    "id SERIAL PRIMARY KEY," +
+                    "username VARCHAR(50) UNIQUE NOT NULL," +
+                    "password VARCHAR(255) NOT NULL," +
+                    "email VARCHAR(100) NOT NULL," +
+                    "role VARCHAR(10) NOT NULL);";
 
             String createProductsTable = "CREATE TABLE IF NOT EXISTS products (" +
-                "id SERIAL PRIMARY KEY," +
-                "name VARCHAR(100) NOT NULL," +
-                "price NUMERIC(10, 2) NOT NULL," +
-                "quantity INT NOT NULL," +
-                "seller_id INT NOT NULL," +
-                "FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE);";
+                    "id SERIAL PRIMARY KEY," +
+                    "name VARCHAR(100) NOT NULL," +
+                    "price NUMERIC(10, 2) NOT NULL," +
+                    "quantity INT NOT NULL," +
+                    "seller_id INT NOT NULL," +
+                    "FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE);";
 
             connection.createStatement().execute(createUsersTable);
             connection.createStatement().execute(createProductsTable);
@@ -47,7 +47,7 @@ public class DatabaseUtils {
     // Executes a query with parameters
     public static boolean executeUpdate(String query, Object... params) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < params.length; i++) {
                 preparedStatement.setObject(i + 1, params[i]);
             }
