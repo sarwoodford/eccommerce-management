@@ -77,4 +77,8 @@ public class ProductService {
         return productDAO.getProducts().stream().filter(product -> product.getProductSellerId() == productSellerId)
                 .toList();
     }
+
+    public Product getProductById(int productId){
+        return productDAO.getProductById(productId);
+    }
 }

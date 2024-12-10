@@ -7,7 +7,6 @@ import ecommerce.service.UserService;
 import ecommerce.model.Admin;
 import ecommerce.model.Buyer;
 import ecommerce.model.Seller;
-import ecommerce.dao.UserDAO;
 import ecommerce.utils.InputUtils;
 
 /**

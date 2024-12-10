@@ -28,7 +28,8 @@ public class ProductDAO {
                 product.getProductName() + ", " +
                 product.getProductPrice() + ", " +
                 product.getProductStock() + ", " +
-                product.getProductSellerId() + ")";
+                product.getProductSellerId() + ", " +
+                product.getProductDescription()+ ")";
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 Statement statement = connection.createStatement()) {
@@ -56,7 +57,8 @@ public class ProductDAO {
                         resultSet.getString("name"),
                         resultSet.getDouble("price"),
                         resultSet.getInt("quantity"),
-                        resultSet.getInt("seller_id")));
+                        resultSet.getInt("seller_id"),
+                        resultSet.getString("description")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,5 +99,37 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Product getProductById(int productId) {
+        String query = "SELECT * FROM products WHERE id = ?";
+        Product product = null;
+    
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+    
+            // Set the productId parameter in the prepared statement
+            statement.setInt(1, productId);
+    
+            // Execute the query and get the result set
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Map the result to a Product object
+                    product = new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getInt("sellerId"),
+                        resultSet.getString("description")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        // Return the product (could be null if no product is found)
+        return product;
     }
 }

@@ -3,7 +3,11 @@ package ecommerce;
 import ecommerce.utils.DatabaseUtils;
 import ecommerce.controller.ProductController;
 import ecommerce.controller.UserController;
+import ecommerce.model.Product;
 import ecommerce.utils.InputUtils;
+
+import java.util.Scanner;
+import java.util.List;
 
 /**
  * Main application class serving as the entry point of the program.
@@ -16,6 +20,8 @@ public class App {
      * Responsible for setting up resources, initializing services, and running the
      * program.
      */
+
+    private static final Scanner scanner = new Scanner(System.in);
 
     // Manage user interactions via controllers and services.
     private static ProductController productController = new ProductController();
@@ -66,11 +72,72 @@ public class App {
     }
 
     private static void displayBuyerMenu() {
-        // Print main menu options.
-        System.out.println("Welcome Buyer!");
-        System.out.println("1. View all Products");
-        System.out.println("2. View specific Product (w/ product info)");
-        System.out.println("3. Exit");
+        while(true){
+            // Print main menu options.
+            System.out.println("Welcome Buyer!");
+            System.out.println("1. View all Products");
+            System.out.println("2. View specific Product (w/ product info)");
+            System.out.println("3. Exit");
+
+            System.out.print("Please enter an option: ");
+            int choice = getUserChoice();
+
+            switch(choice) {
+                case 1: 
+                    viewAllProducts();
+                    break;
+                case 2: 
+                    viewSpecifcProduct();
+                    break;
+                case 3: 
+                    System.out.println("Thank you for choosing Buyer Menu! Goodbye!");
+                    System.exit(0);
+                default: 
+                    System.out.println("Invalid option selected. Please choose 1, 2 or 3");
+            }
+        }
+    }
+
+    private static int getUserChoice(){
+        try{
+            return Integer.parseInt(scanner.nextLine());
+        }catch(NumberFormatException e){
+            return -1;
+        }
+    }
+
+    private static void viewAllProducts() {
+        System.out.println("\nAll Products In Ecommerce System: ");
+        List<Product> products = productController.getAllProducts();
+    
+        if (products.isEmpty()) {
+            System.out.println("No products to show! Come back later!");
+        } else {
+            products.forEach(product -> System.out.println(
+                "\nid: " + product.getProductId() + 
+                "\nName: " + product.getProductName() + 
+                "\nAvailable Stock: " + product.getProductStock() + 
+                "\nPrice: $" + product.getProductPrice()
+            ));
+        }
+    }
+
+    private static void viewSpecifcProduct(){
+        System.out.print("\nEnter ID of Product you wish to view: ");
+        int productId = getUserChoice();
+
+        Product product = productController.getProductById(productId);
+        if(product == null) {
+            System.out.println("No product with that ID. Please try again!");
+        } else {
+            System.out.println("\nProduct Details:" +
+            "\nID: " + product.getProductId() +
+            "\nName: " + product.getProductName() +
+            "\nDescription: " + product.getProductDescription() +
+            "\nPrice: $" + product.getProductPrice() +
+            "\nStock: " + product.getProductStock()
+            );
+        }
     }
 
     private static void displaySellerMenu() {
