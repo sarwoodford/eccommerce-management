@@ -13,6 +13,7 @@ public class Product {
     private double productPrice;
     private int productStock;
     private int productSellerId;
+    private String productDescription;
 
     /**
      * Parametrized constructor constructs a new Product object including the
@@ -23,15 +24,17 @@ public class Product {
      * @param productPrice
      * @param productStock
      * @param productSellerId
+     * @param productDescription
      */
 
     public Product(int productId, String productName, double productPrice, int productStock,
-            int productSellerId) {
+            int productSellerId, String productDescription) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productStock = productStock;
         this.productSellerId = productSellerId;
+        this.productDescription = productDescription;
     }
 
     /**
@@ -133,6 +136,14 @@ public class Product {
         this.productSellerId = productSellerId;
     }
 
+    public String getProductDescription(){
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription){
+        this.productDescription = productDescription;
+    }
+
     /**
      * returns a string representing the product and all of it's details
      * 
@@ -147,6 +158,7 @@ public class Product {
                 ", price: " + productPrice +
                 ", stock: " + productStock +
                 ", seller: " + productSellerId +
+                ", description: " + productDescription +
                 "}";
     }
 }
