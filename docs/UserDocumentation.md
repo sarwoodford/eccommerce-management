@@ -84,8 +84,8 @@ This application is a **Ecommerce System** developed to streamline the managemen
 ## 3. Class Diagram
  
 The class diagram below depicts the relationships between classes, including associations between `User` and `Admin`, `Buyer` and `Seller`
-![Final UML]
-  
+[Ecommerce Database.pdf](https://github.com/user-attachments/files/18101459/Ecommerce.Database.pdf)
+
 
 ## 4. Class Overview and Explanation
  
