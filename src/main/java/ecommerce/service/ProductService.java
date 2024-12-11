@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.dao.ProductDAO;
+import ecommerce.dao.UserDAO;
 import ecommerce.model.Product;
+import ecommerce.model.Seller;
 import ecommerce.utils.InputUtils;
 
 /**
@@ -12,16 +14,14 @@ import ecommerce.utils.InputUtils;
  * handles both business logic and user interactions.
  */
 public class ProductService {
-    /**
-     * ProductDAO instance assigned
-     */
     private final ProductDAO productDAO;
+    private final UserDAO userDAO;
 
-    /**
-     * Constructor initializes the ProductDAO
-     */
-    public ProductService() {
+    // Constructor initializes the ProductDAO and accepts an existing UserDAO
+    // instance
+    public ProductService(UserDAO userDAO) {
         this.productDAO = new ProductDAO();
+        this.userDAO = userDAO; 
     }
 
     /**
@@ -41,6 +41,37 @@ public class ProductService {
         System.out.println("\nAll Products:\n");
         for (Product product : products) {
             System.out.println(product + "\n");
+        }
+    }
+
+    /**
+     * Displays all products in the database, including seller details.
+     */
+    public void adminDisplayAllProducts() {
+        List<Product> products = getAllProducts();
+        System.out.println("\nAll Products with Seller Info:\n");
+
+        for (Product product : products) {
+            // Fetch the seller using the seller ID from the product
+            Seller seller = (Seller) userDAO.getSellerById(product.getProductSellerId());
+
+            // Display product details
+            System.out.println("=====================================");
+            System.out.println("Product: " + product.getProductName());
+            System.out.println("Price: " + product.getProductPrice());
+            System.out.println("Stock: " + product.getProductStock());
+            System.out.println("Description: " + product.getProductDescription());
+
+            // Display seller details
+            if (seller != null) {
+                System.out.println("----------- Seller Info -----------");
+                System.out.println("Seller: " + seller.getUsername());
+                System.out.println("Seller Email: " + seller.getEmail());
+            } else {
+                System.out.println("Seller not found.");
+            }
+
+            System.out.println("=====================================\n"); // Separator between products
         }
     }
 

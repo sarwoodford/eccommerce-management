@@ -3,6 +3,7 @@ package ecommerce;
 import ecommerce.utils.DatabaseUtils;
 import ecommerce.service.ProductService;
 import ecommerce.service.UserService;
+import ecommerce.dao.UserDAO;
 import ecommerce.model.Product;
 import ecommerce.model.User;
 import ecommerce.utils.InputUtils;
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class App {
 
-    // Reference to services
-    private static final ProductService productService = new ProductService();
+    private static final UserDAO userDAO = new UserDAO();
+    private static final ProductService productService = new ProductService(userDAO);
     private static final UserService userService = new UserService();
 
     public static void main(String[] args) {
@@ -225,7 +226,7 @@ public class App {
                     userService.deleteUser(userId);
                     break;
                 case 3:
-                    viewAllProducts();
+                    productService.adminDisplayAllProducts();
                     break;
                 case 4:
                     System.out.println("Exiting Admin Menu...");

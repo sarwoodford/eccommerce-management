@@ -6,6 +6,9 @@ import ecommerce.model.Seller;
 import ecommerce.model.User;
 import ecommerce.utils.DatabaseUtils;
 import org.mindrot.jbcrypt.BCrypt;
+import org.postgresql.util.PSQLException;
+import java.sql.SQLException;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,6 +88,27 @@ public class UserDAO {
         }
         return null;
     }
+
+    public Seller getSellerById(int sellerId) {
+        String query = "SELECT * FROM users WHERE id = ? AND role = 'seller'";
+    
+        try (Connection connection = DatabaseUtils.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sellerId);
+    
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs != null && rs.next()) {
+                    // Creating a Seller object with the data from the result set
+                    return new Seller(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+                            rs.getString("email"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no seller is found
+    }
+    
 
       // Update a user (password should ideally be hashed here too)
 public String updateUser(User user) {
