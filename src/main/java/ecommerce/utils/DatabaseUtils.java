@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseUtils {
-    private static final String URL = "jdbc:postgresql://localhost:5432/ecommerce";
-    private static final String USER = "postgres";
+    private static final String URL = "jdbc:postgresql://localhost:5432/ecommerce-final-test";
+    private static final String USER = "myuser";
     private static final String PASSWORD = "password";
 
     // Establishes a connection to the database
@@ -77,10 +77,11 @@ public class DatabaseUtils {
 
     public static void closeDatabase() {
         try {
-            DriverManager.getConnection(URL + ";shutdown=true", USER, PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Database connection closed.");
+        } catch (Exception e) {
+            System.err.println("Error while shutting down: " + e.getMessage());
         }
     }
+    
 
 }

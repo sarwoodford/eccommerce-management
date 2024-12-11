@@ -24,7 +24,6 @@ public class ProductService {
         this.productDAO = new ProductDAO();
     }
 
-
     /**
      * Lists all products in the ecommerce database.
      * 
@@ -39,14 +38,11 @@ public class ProductService {
      */
     public void displayAllProducts() {
         List<Product> products = getAllProducts();
-        System.out.println("All Products:");
+        System.out.println("\nAll Products:\n");
         for (Product product : products) {
-            System.out.println(product);
+            System.out.println(product + "\n");
         }
     }
-
-    
-
 
     /**
      * Returns a list of all products affiliated with a specified seller based
@@ -75,31 +71,30 @@ public class ProductService {
      * Handles adding a new product with input prompts and validations.
      */
     public void addProduct(int sellerId) {
-        System.out.println("Add a New Product:");
+        System.out.println("\nAdd a New Product:\n");
         String name = InputUtils.readString("Enter product name: ");
         String description = InputUtils.readString("Enter product description: ");
         double price = InputUtils.readDouble("Enter product price: ");
         int stock = InputUtils.readInt("Enter product stock quantity: ");
         Product product = new Product(0, name, price, stock, sellerId, description);
         productDAO.addProduct(product);
-        System.out.println("Product added successfully!");
+        System.out.println("\nProduct added successfully!\n");
     }
-
-   
 
     /**
      * Handles updating an existing product.
      */
     public void updateProduct() {
+        System.out.println("\nUpdate a Product:");
         int productId = InputUtils.readInt("Enter product ID to update: ");
         Product product = getProductById(productId);
 
         if (product == null) {
-            System.out.println("Error: Product not found.");
+            System.out.println("\nError: Product not found.\n");
             return;
         }
 
-        System.out.println("Updating Product: " + product.getProductName());
+        System.out.println("\nUpdating Product: " + product.getProductName() + "\n");
         String name = InputUtils.readString("Enter new product name: ");
         String description = InputUtils.readString("Enter new product description: ");
         double price = InputUtils.readDouble("Enter new product price: ");
@@ -107,7 +102,7 @@ public class ProductService {
         int sellerId = product.getProductSellerId(); // Assuming seller ID doesn't change.
 
         if (price < 0 || stock < 0) {
-            System.out.println("Error: Price and stock quantity must be non-negative.");
+            System.out.println("\nError: Price and stock quantity must be non-negative.\n");
             return;
         }
 
@@ -118,19 +113,16 @@ public class ProductService {
         product.setProductSellerId(sellerId);
 
         productDAO.updateProduct(product);
-        System.out.println("Product updated successfully!");
+        System.out.println("\nProduct updated successfully!\n");
     }
-
-    
 
     /**
      * Handles deleting a product by its unique ID.
      */
-    public void deleteProductById() {
+    public void deleteProductById(int sellerId) {
+        System.out.println("\nDelete a Product:\n");
         int productId = InputUtils.readInt("Enter product ID to delete: ");
-        productDAO.deleteProduct(productId);
-        System.out.println("Product deleted successfully!");
+        productDAO.deleteProduct(productId, sellerId);
+        System.out.println("\nProduct deleted successfully!\n");
     }
-
-    
 }
