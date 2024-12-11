@@ -12,13 +12,23 @@ public class InputUtils {
     // Create a Scanner object for reading input
     private static final Scanner scanner = new Scanner(System.in);
 
-    // Read a string input with a prompt
+    /**
+     * method to read a string
+     * 
+     * @param prompt
+     * @return scanner
+     */
     public static String readString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
-    // Read an integer with a prompt
+    /**
+     * method to read an integer
+     * 
+     * @param prompt
+     * @return parsed int
+     */
     public static int readInt(String prompt) {
         while (true) {
             try {
@@ -30,7 +40,12 @@ public class InputUtils {
         }
     }
 
-    // Read a double with a prompt
+    /**
+     * method to read a double
+     * 
+     * @param prompt
+     * @return parsed double
+     */
     public static double readDouble(String prompt) {
         while (true) {
             try {
@@ -42,7 +57,12 @@ public class InputUtils {
         }
     }
 
-    // Read and validate username
+    /**
+     * method to read and validate username 
+     * 
+     * @param prompt
+     * @return username / error message
+     */
     public static String readUsername(String prompt) {
         while (true) {
             String username = readString(prompt);
@@ -54,7 +74,12 @@ public class InputUtils {
         }
     }
 
-    // Read and validate email address
+    /**
+     * method to read and validate email
+     * 
+     * @param prompt
+     * @return email / error message
+     */
     public static String readEmail(String prompt) {
         while (true) {
             String email = readString(prompt);
@@ -66,13 +91,23 @@ public class InputUtils {
         }
     }
 
-    // Read a password (password is masked for security)
+    /**
+     * method to read a password (masked for security)
+     * 
+     * @param prompt
+     * @return String
+     */
     public static String readPassword(String prompt) {
         System.out.print(prompt);
         return new String(System.console().readPassword());
     }
 
-    // Read a non-empty string (e.g. username)
+    /**
+     * method to read a non-empty string (ex: username)
+     * 
+     * @param prompt
+     * @return input
+     */
     public static String readNonEmptyString(String prompt) {
         while (true) {
             String input = readString(prompt);
@@ -84,7 +119,12 @@ public class InputUtils {
         }
     }
 
-    // Validate email format
+    /**
+     * method to validate email
+     * 
+     * @param email
+     * @return boolean
+     */
     private static boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
                             "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -93,12 +133,22 @@ public class InputUtils {
         return matcher.matches();
     }
 
-    // Calidate password strength (minimum length)
+    /**
+     * method to validate password 
+     * 
+     * @param password
+     * @return boolean
+     */
     public static boolean isValidPassword(String password) {
         return password != null && password.length() >= 8; // Example: Minimum length 8
     }
 
-    // Prompt and read a password with validation
+    /**
+     * method to read a validated password
+     * 
+     * @param prompt
+     * @return password / error message 
+     */
     public static String readValidPassword(String prompt) {
         while (true) {
             String password = readPassword(prompt);

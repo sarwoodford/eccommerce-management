@@ -6,7 +6,6 @@ import ecommerce.model.Seller;
 import ecommerce.model.User;
 import ecommerce.utils.DatabaseUtils;
 import org.mindrot.jbcrypt.BCrypt;
-import org.postgresql.util.PSQLException;
 import java.sql.SQLException;
 
 
@@ -16,7 +15,11 @@ import java.util.List;
 
 public class UserDAO {
 
-       // Create a new user with password hashing using BCrypt
+       /**
+        * adds a user to the database in the users table
+        *
+        *@param User
+        */
        public String addUser(User user) {
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         String query = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
@@ -28,7 +31,11 @@ public class UserDAO {
         }
     }
 
-    // Read all users 
+    /**
+     * returns a list of all users in the users table
+     * 
+     * @return all users
+     */
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
@@ -60,7 +67,12 @@ public class UserDAO {
         return users;
     }
 
-    // Read a user by username 
+    /**
+     * retrieves a user based on their username and returns it
+     * 
+     * @param username
+     * @return user
+     */
     public User getUserByUsername(String username) {
         String query = "SELECT * FROM users WHERE username = ?";
 
@@ -89,6 +101,12 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * retrieves a seller by their unique id and returns it
+     * 
+     * @param sellerId
+     * @return seller
+     */
     public Seller getSellerById(int sellerId) {
         String query = "SELECT * FROM users WHERE id = ? AND role = 'seller'";
     
@@ -110,7 +128,12 @@ public class UserDAO {
     }
     
 
-      // Update a user (password should ideally be hashed here too)
+      /**
+       * updates the fields of a user that already exists in the database 
+       * 
+       * @param user
+       * @return success/error message
+       */
 public String updateUser(User user) {
     // Check if the username is already taken
     String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ? AND id != ?";
@@ -138,7 +161,12 @@ public String updateUser(User user) {
     }
 }
 
-    // Delete a user by ID
+    /**
+     * deletes a user by their unique id 
+     * 
+     * @param userId
+     * @return boolean
+     */
     public boolean deleteUserById(int userId) {
         String query = "DELETE FROM users WHERE id = ?";
         return DatabaseUtils.executeUpdate(query, userId);
@@ -146,7 +174,14 @@ public String updateUser(User user) {
 
   
 
-    // Authenticate user by username and password
+    /**
+     * authenticates a users login credentials to validate that they exist 
+     * in the database 
+     * 
+     * @param username
+     * @param password
+     * @return boolean
+     */
     public boolean authenticateUser(String username, String password) {
         String query = "SELECT password FROM users WHERE username = ?";
         try (Connection connection = DatabaseUtils.getConnection();
