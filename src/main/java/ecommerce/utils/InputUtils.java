@@ -30,6 +30,18 @@ public class InputUtils {
         }
     }
 
+    // Read a double with a prompt
+    public static double readDouble(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Double.parseDouble(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid decimal number.");
+            }
+        }
+    }
+
     // Read and validate username
     public static String readUsername(String prompt) {
         while (true) {

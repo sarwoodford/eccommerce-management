@@ -1,15 +1,21 @@
 package ecommerce.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ecommerce.dao.UserDAO;
+import ecommerce.model.Admin;
+import ecommerce.model.Buyer;
+import ecommerce.model.Seller;
 import ecommerce.model.User;
+import ecommerce.utils.InputUtils;
 
 /**
- * UserService class utilized User and UserDAO classes for CURD operations
+ * UserService class handles CRUD operations and user interactions.
  */
 public class UserService {
     private final UserDAO userDAO;
+    private static User currentUser;
 
     /**
      * User Service Constructor
@@ -19,9 +25,41 @@ public class UserService {
     }
 
     /**
-     * adds a user which validating empty fields that are required
+     * Handles the registration of a new user with input validation.
+     */
+    public void registerUser() {
+        System.out.println("Register a new user:");
+        String username = InputUtils.readString("Enter username: ");
+        String password = InputUtils.readPassword("Enter password: ");
+        String email = InputUtils.readString("Enter email: ");
+        String role = InputUtils.readString("Enter role (Buyer, Seller, Admin): ");
+
+        try {
+            User user;
+            switch (role.toLowerCase()) {
+                case "admin":
+                    user = new Admin(0, username, password, email);
+                    break;
+                case "seller":
+                    user = new Seller(0, username, password, email);
+                    break;
+                case "buyer":
+                    user = new Buyer(0, username, password, email);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid role. Valid user roles include Buyer, Seller, and Admin.");
+            }
+            addUser(user);
+            System.out.println("User registered successfully!"+ user);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage()); 
+        }
+    }
+
+    /**
+     * Adds a user after validating required fields.
      * 
-     * @param user
+     * @param user User object to be added.
      */
     public void addUser(User user) {
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
@@ -33,55 +71,130 @@ public class UserService {
         userDAO.addUser(user);
     }
 
+    /**
+     * Handles user login by validating credentials.
+     * 
+     * @return true if login is successful; false otherwise.
+     */
+    public boolean loginUser() {
+        System.out.println("User Login:");
+        String username = InputUtils.readString("Enter username: ");
+        String password = InputUtils.readPassword("Enter password: ");
 
-    public boolean login(String email, String password) {
-        return userDAO.authenticateUser(email, password);
+        if (userDAO.authenticateUser(username, password)) {
+            // After authentication, set the currentUser
+            currentUser = userDAO.getUserByUsername(username);
+            System.out.println("Login successful!");
+            return true;
+        } else {
+            System.out.println("Login failed. Please check your credentials.");
+            return false;
+        }
     }
 
+    
+
     /**
-     * returns a list of all users in database
+     * Returns a list of all users in the database.
      * 
-     * @return list of all users
+     * @return List of all users.
      */
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
 
     /**
-     * returns a user by identifying them by their username
+     * Retrieves a user by their username.
      * 
-     * @param username
-     * @return user based on their username
+     * @param username Username of the user.
+     * @return User object if found; null otherwise.
      */
     public User getUserByUsername(String username) {
         return userDAO.getUserByUsername(username);
     }
 
-    /**
-     * updates an existing user in the database
+        /**
+     * Retrieves the current logged-in user (if any).
      * 
-     * @param user
+     * @return The current logged-in user.
      */
-    public void updateUser(User user) {
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+     /**
+     * Retrieves the current logged-in user's ID.
+     * 
+     * @return ID of the currently logged-in user.
+     */
+    public int getCurrentUserId() {
+        return currentUser != null ? currentUser.getId() : -1; // Return -1 if no user is logged in
+    }
+
+     /**
+     * Retrieves the current logged-in user's role.
+     * 
+     * @return Role of the currently logged-in user.
+     */
+    public String getCurrentUserRole() {
+        return currentUser != null ? currentUser.getRole() : "Guest"; // Return "Guest" if no user is logged in
+    }
+
+
+
+    /**
+     * Updates an existing user with role validation.
+     * 
+     * @param id User ID.
+     * @param username Username.
+     * @param password Password.
+     * @param email Email.
+     * @param role User role.
+     */
+    public void updateUser(int id, String username, String password, String email, String role) {
+        User user;
+
+        switch (role.toLowerCase()) {
+            case "admin":
+                user = new Admin(id, username, password, email);
+                break;
+            case "seller":
+                user = new Seller(id, username, password, email);
+                break;
+            case "buyer":
+                user = new Buyer(id, username, password, email);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role. Valid roles include Seller, Buyer, and Admin.");
+        }
         userDAO.updateUser(user);
     }
 
     /**
-     * deletes a user by their unique id
+     * Deletes a user by their unique ID.
      * 
-     * @param userId
+     * @param userId User ID.
      */
     public void deleteUser(int userId) {
         userDAO.deleteUserById(userId);
     }
 
+
+
+
     /**
-     * returns a list of users given specified role
+     * Returns a list of users based on their role.
      * 
-     * @param role
-     * @return list of all users by role
+     * @param role Role of the users.
+     * @return List of users matching the specified role.
      */
     public List<User> getUsersByRole(String role) {
-        return userDAO.getAllUsers().stream().filter(user -> user.getRole().equalsIgnoreCase(role)).toList();
+        return userDAO.getAllUsers().stream()
+                .filter(user -> user.getRole().equalsIgnoreCase(role))
+                .collect(Collectors.toList());
     }
 }
+
+
+
+
