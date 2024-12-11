@@ -155,7 +155,7 @@ public class App {
                     productService.updateProduct();
                     break;
                 case 4:
-                    productService.deleteProductById();
+                    productService.deleteProductById(userService.getCurrentUserId());
                     break;
                 case 5:
                     System.out.println("Exiting Seller Menu...");
