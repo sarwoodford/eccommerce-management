@@ -13,5 +13,8 @@ CREATE TABLE Products (
     name VARCHAR(100) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     quantity INT NOT NULL,
-    seller_id INT REFERENCES Users(id)
+    FOREIGN KEY (seller_id) REFERENCES Users(id)
 );
+
+
+

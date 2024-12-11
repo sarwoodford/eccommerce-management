@@ -74,14 +74,12 @@ public class ProductService {
     /**
      * Handles adding a new product with input prompts and validations.
      */
-    public void addProduct() {
+    public void addProduct(int sellerId) {
         System.out.println("Add a New Product:");
         String name = InputUtils.readString("Enter product name: ");
         String description = InputUtils.readString("Enter product description: ");
         double price = InputUtils.readDouble("Enter product price: ");
         int stock = InputUtils.readInt("Enter product stock quantity: ");
-        int sellerId = InputUtils.readInt("Enter seller ID: ");
-
         Product product = new Product(0, name, price, stock, sellerId, description);
         productDAO.addProduct(product);
         System.out.println("Product added successfully!");

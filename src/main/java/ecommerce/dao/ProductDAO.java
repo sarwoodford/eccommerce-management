@@ -1,6 +1,8 @@
 package ecommerce.dao;
 
 import ecommerce.model.Product;
+import ecommerce.utils.DatabaseUtils;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,32 +10,27 @@ import java.util.List;
 /**
  * Product DAO handles and manages Product objects in the database
  * 
- * methods are created to perform CURD
+ * methods are created to perform CRUD
  */
 public class ProductDAO {
-    /**
-     * database url, username and password for connection
-     */
-    private static final String URL = "";
-    private static final String USER = "sara";
-    private static final String PASSWORD = "sara";
+ 
 
     /**
-     * adds a new product to the products table
+     * Adds a new product to the products table
      * 
      * @param product
      */
     public void addProduct(Product product) {
-        String query = "INSERT INTO products (name, price, quantity, seller_id) VALUES (" +
-                product.getProductName() + ", " +
-                product.getProductPrice() + ", " +
-                product.getProductStock() + ", " +
-                product.getProductSellerId() + ", " +
-                product.getProductDescription()+ ")";
+        String query = "INSERT INTO products (name, price, quantity, seller_id, description) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                Statement statement = connection.createStatement()) {
-            statement.executeQuery(query);
+        try (Connection connection = DatabaseUtils.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, product.getProductName());
+            statement.setDouble(2, product.getProductPrice());
+            statement.setInt(3, product.getProductStock());
+            statement.setInt(4, product.getProductSellerId());
+            statement.setString(5, product.getProductDescription());
+            statement.executeUpdate();  
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +45,33 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products";
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = DatabaseUtils.getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                products.add(new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getInt("seller_id"),
+                        resultSet.getString("description")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+      /**
+     * returns a list of all products in the products table
+     * 
+     * @return all products
+     */
+    public List<Product> getSellerProducts() {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM products WHERE seller_id = ?";
+        try (Connection connection = DatabaseUtils.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
@@ -77,7 +100,7 @@ public class ProductDAO {
                 "quantity = " + product.getProductStock() + " " +
                 "WHERE id = " + product.getProductId();
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = DatabaseUtils.getConnection();
                 Statement statement = connection.createStatement()) {
             statement.executeQuery(query);
         } catch (SQLException e) {
@@ -93,7 +116,7 @@ public class ProductDAO {
     public void deleteProduct(int productId) {
         String query = "DELETE FROM products WHERE id = " + productId;
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = DatabaseUtils.getConnection();
                 Statement statement = connection.createStatement()) {
             statement.executeQuery(query);
         } catch (SQLException e) {
@@ -105,7 +128,7 @@ public class ProductDAO {
         String query = "SELECT * FROM products WHERE id = ?";
         Product product = null;
     
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = DatabaseUtils.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
     
             // Set the productId parameter in the prepared statement

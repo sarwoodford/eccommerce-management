@@ -33,6 +33,7 @@ public class DatabaseUtils {
                     "price NUMERIC(10, 2) NOT NULL," +
                     "quantity INT NOT NULL," +
                     "seller_id INT NOT NULL," +
+                    "description TEXT," +
                     "FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE);";
 
             connection.createStatement().execute(createUsersTable);

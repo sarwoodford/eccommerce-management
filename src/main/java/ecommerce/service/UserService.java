@@ -11,7 +11,7 @@ import ecommerce.model.User;
 import ecommerce.utils.InputUtils;
 
 /**
- * UserService class handles CURD operations and user interactions.
+ * UserService class handles CRUD operations and user interactions.
  */
 public class UserService {
     private final UserDAO userDAO;
@@ -50,9 +50,9 @@ public class UserService {
                     throw new IllegalArgumentException("Invalid role. Valid user roles include Buyer, Seller, and Admin.");
             }
             addUser(user);
-            System.out.println("User registered successfully!");
+            System.out.println("User registered successfully!"+ user);
         } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage()); 
         }
     }
 

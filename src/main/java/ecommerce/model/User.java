@@ -10,7 +10,7 @@ public abstract class User {
     private String email;
     private String role;
 
-    private String[] valid_roles = { "admin", "customer", "seller" };
+    private String[] valid_roles = { "admin", "buyer", "seller" };
 
     // Constructor
     public User(int id, String username, String password, String email, String role) {
@@ -18,11 +18,7 @@ public abstract class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        if (isValidRole(role)) {
-            this.role = role;
-        } else {
-            this.role = "customer";
-        }
+        this.role = role;
     }
 
     // Check if the role is valid

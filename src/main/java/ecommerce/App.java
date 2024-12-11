@@ -141,7 +141,8 @@ public class App {
                     displaySellerProducts();
                     break;
                 case 2:
-                    productService.addProduct();
+                int sellerId = userService.getCurrentUserId();
+                    productService.addProduct(sellerId);
                     break;
                 case 3:
                     productService.updateProduct();
@@ -189,7 +190,7 @@ public class App {
             System.out.println("=====================================");
             System.out.println("User ID: " + user.getId());
             System.out.println("Email: " + user.getEmail());
-            System.out.println("Date Created: " + user.getRole());
+            System.out.println("Role: " + user.getRole());
             System.out.println("=====================================");
         }
     }

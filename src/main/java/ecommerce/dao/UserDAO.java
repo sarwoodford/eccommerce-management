@@ -20,6 +20,8 @@ public class UserDAO {
 
         String query = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
         return DatabaseUtils.executeUpdate(query, user.getUsername(), hashedPassword, user.getEmail(), user.getRole());
+
+        // ***COMPLETE ERROR HANDLING FOR WHEN USERNAME IS ALREADY CREATED - (BETTER ERROR MSG FOR PK/FK VIOLATION)*** //
     }
 
     // Read all users (no pagination, just fetch all users)
@@ -108,7 +110,7 @@ public class UserDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs != null && rs.next()) {
                     String hashedPassword = rs.getString("password");
-                    return BCrypt.checkpw(password, hashedPassword);  // Validate password
+                    return BCrypt.checkpw(password, hashedPassword); 
                 }
             }
         } catch (SQLException e) {
