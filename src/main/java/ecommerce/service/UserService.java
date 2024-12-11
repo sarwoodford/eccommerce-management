@@ -176,8 +176,17 @@ public class UserService {
      * @param userId User ID.
      */
     public void deleteUser(int userId) {
-        userDAO.deleteUserById(userId);
-    }
+        try {
+            boolean isDeleted = userDAO.deleteUserById(userId); // Assuming deleteUserById returns a boolean.
+            if (isDeleted) {
+                System.out.println("\nUser with ID " + userId + " was successfully deleted.\n");
+            } else {
+                System.out.println("\nNo user found with ID " + userId + ". Please check the ID and try again.\n");
+            }
+        } catch (Exception e) {
+            System.out.println("\nError deleting user: " + e.getMessage() + "\n");
+        }
+    }    
 
 
 

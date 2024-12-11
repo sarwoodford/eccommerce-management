@@ -13,18 +13,19 @@ import java.util.List;
 
 public class UserDAO {
 
-    // Create a new user with password hashing using BCrypt
-    public boolean addUser(User user) {
-        // Hash the password before storing it
+       // Create a new user with password hashing using BCrypt
+       public String addUser(User user) {
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-
         String query = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
-        return DatabaseUtils.executeUpdate(query, user.getUsername(), hashedPassword, user.getEmail(), user.getRole());
 
-        // ***COMPLETE ERROR HANDLING FOR WHEN USERNAME IS ALREADY CREATED - (BETTER ERROR MSG FOR PK/FK VIOLATION)*** //
+        if (DatabaseUtils.executeUpdate(query, user.getUsername(), hashedPassword, user.getEmail(), user.getRole())) {
+            return "User added successfully.";
+        } else {
+            return "Error: Username may already be taken or other database issue.";
+        }
     }
 
-    // Read all users (no pagination, just fetch all users)
+    // Read all users 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
@@ -56,7 +57,7 @@ public class UserDAO {
         return users;
     }
 
-    // Read a user by username (for simplicity, no password check here)
+    // Read a user by username 
     public User getUserByUsername(String username) {
         String query = "SELECT * FROM users WHERE username = ?";
 
@@ -86,11 +87,32 @@ public class UserDAO {
     }
 
       // Update a user (password should ideally be hashed here too)
-      public boolean updateUser(User user) {
-        String query = "UPDATE users SET username = ?, password = ?, email = ?, role = ? WHERE id = ?";
-        return DatabaseUtils.executeUpdate(query, user.getUsername(), user.getPassword(), user.getEmail(),
-                user.getRole(), user.getId());
+public String updateUser(User user) {
+    // Check if the username is already taken
+    String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ? AND id != ?";
+    
+    try (ResultSet rs = DatabaseUtils.executeQuery(checkQuery, user.getUsername(), user.getId())) {
+        if (rs != null && rs.next()) {
+            int count = rs.getInt(1);
+            if (count > 0) {
+                return "Error: Username is already taken.";
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Error checking username: " + e.getMessage());
+        return "Error: Database issue.";
     }
+
+    // Hash the password
+    String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+    String query = "UPDATE users SET username = ?, password = ?, email = ?, role = ? WHERE id = ?";
+    
+    if (DatabaseUtils.executeUpdate(query, user.getUsername(), hashedPassword, user.getEmail(), user.getRole(), user.getId())) {
+        return "User updated successfully.";
+    } else {
+        return "Error updating user: Database issue.";
+    }
+}
 
     // Delete a user by ID
     public boolean deleteUserById(int userId) {
