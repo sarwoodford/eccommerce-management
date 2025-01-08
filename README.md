@@ -2,8 +2,6 @@
 
 ## CLI E-Commerce Platform
 
-# MidtermSprint-Java-Sem3 
-
 Welcome to the **Ecommerce Management System)** project, hosted in the repository **Java-FINAL**. This application provides functionality to manage an ecommerce system - including users and products within a console-based interface.
 
 
