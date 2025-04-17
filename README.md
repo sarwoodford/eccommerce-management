@@ -46,12 +46,8 @@ This project is provided for **personal use only**. Redistribution, modification
 
 For detailed license terms, refer to the [LICENSE](./LICENSE.md) file.
 
-## Credits
+## Authors
+- **[Nasser-A-Ali](https://github.com/Nasser-A-Ali)** 
+- **[sarwoodford](https://github.com/sarwoodford)** 
+- **[SearchingSteve](https://github.com/SearchingSteve)** 
 
-This project, **Library Management System (LMS)**, was collaboratively developed by a dedicated team:
-
-- **[Sara Woodford](https://github.com/sarwoodford)** 
-- **[Abdalnasser Ali](https://github.com/Nasser-A-Ali)** 
-- **[Stephen Crocker](https://github.com/SearchingSteve)** 
-
-Each author played an essential role in bringing this project to life, contributing unique skills and insights to create a fully functional library management system. Thanks goes out to all contributors for their hard work and dedication!
